@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContainerInstance = void 0;
-var ContainerInstance = /** @class */ (function () {
+class ContainerInstance {
     /**
      * Creates a container instance. The constructor is private and new instance
      * has to be created using the static functions so that necessary parameters
@@ -9,7 +9,7 @@ var ContainerInstance = /** @class */ (function () {
      *
      * @param container
      */
-    function ContainerInstance(container) {
+    constructor(container) {
         /**
          * Flag to determine if this instance is modifiable or not.
          *
@@ -23,9 +23,9 @@ var ContainerInstance = /** @class */ (function () {
      *
      * @param container
      */
-    ContainerInstance.createEmpty = function (container) {
+    static createEmpty(container) {
         return new ContainerInstance(container);
-    };
+    }
     /**
      * Creates an instance from an object. There is nothing to resolve in
      * this container instance. The passed instance value is the resolved value.
@@ -34,10 +34,9 @@ var ContainerInstance = /** @class */ (function () {
      * @param instance
      * @param singleton
      */
-    ContainerInstance.createFromInstance = function (container, instance, singleton) {
-        if (singleton === void 0) { singleton = false; }
+    static createFromInstance(container, instance, singleton = false) {
         return new ContainerInstance(container).setInstance(instance).setSingleton(singleton);
-    };
+    }
     /**
      * Creates an instance from resolver callback function.
      *
@@ -45,76 +44,74 @@ var ContainerInstance = /** @class */ (function () {
      * @param resolver
      * @param singleton
      */
-    ContainerInstance.createFromResolver = function (container, resolver, singleton) {
-        if (singleton === void 0) { singleton = false; }
+    static createFromResolver(container, resolver, singleton = false) {
         return new ContainerInstance(container).setResolver(resolver).setSingleton(singleton);
-    };
+    }
     /**
      * @inheritdoc
      *
      * @return
      */
-    ContainerInstance.prototype.resolve = function () {
+    resolve() {
         if (typeof this._resolver === 'function') {
             this._resolved = this._resolver(this._container);
         }
         return this._resolved;
-    };
+    }
     /**
      * @inheritdoc
      */
-    ContainerInstance.prototype.unresolve = function () {
+    unresolve() {
         if (this._singleton) {
             return;
         }
         this._resolved = undefined;
-    };
+    }
     /**
      * @inheritdoc
      *
      * @param resolver
      */
-    ContainerInstance.prototype.setResolver = function (resolver) {
+    setResolver(resolver) {
         this._resolver = resolver;
         return this;
-    };
+    }
     /**
      * @inheritdoc
      *
      * @param instance
      */
-    ContainerInstance.prototype.setInstance = function (instance) {
+    setInstance(instance) {
         this._resolved = instance;
         return this;
-    };
+    }
     /**
      * @inheritdoc
      *
      * @param status
      */
-    ContainerInstance.prototype.setSingleton = function (status) {
+    setSingleton(status) {
         this._singleton = status;
         return this;
-    };
+    }
     /**
      * @inheritdoc
      *
      * @return
      */
-    ContainerInstance.prototype.isSingleton = function () {
+    isSingleton() {
         return this._singleton;
-    };
+    }
     /**
      * @inheritdoc
      *
      * @return
      */
-    ContainerInstance.prototype.getResolved = function () {
+    getResolved() {
         if (this._resolved !== undefined) {
             return this._resolved;
         }
         return this.resolve();
-    };
-    return ContainerInstance;
-}());
+    }
+}
 exports.ContainerInstance = ContainerInstance;
