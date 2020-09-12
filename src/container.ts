@@ -1,5 +1,6 @@
 import { KeyValue } from '@rheas/contracts';
 import { ContainerInstance } from './containerInstance';
+import { BindingNotFoundException } from '@rheas/errors/bindingNotFound';
 import { IContainer, InstanceHandler, IContainerInstance } from '@rheas/contracts/container';
 
 export class Container implements IContainer {
@@ -69,15 +70,15 @@ export class Container implements IContainer {
     }
 
     /**
-     * Returns the rheas binding of the specified key. Or returns null when
-     * no binding is found or the defaultValue is not
+     * Returns the binding on the specified key. If no binding is found, an
+     * exception is thrown.
      *
      * @param key The binding key to retreive
      */
-    public get(key: string, defaultValue: any = null) {
-        if (!this._instances.hasOwnProperty(key)) {
-            return defaultValue;
+    public get(key: string) {
+        if (this._instances.hasOwnProperty(key)) {
+            return this._instances[key].getResolved();
         }
-        return this._instances[key].getResolved();
+        throw new BindingNotFoundException(key);
     }
 }
