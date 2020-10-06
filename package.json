@@ -1,6 +1,6 @@
 {
   "name": "@rheas/container",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Dependency container module",
   "main": "index.js",
   "keywords": [
@@ -23,12 +23,12 @@
     "build-dev": "tsc --outDir ./build_dev && npm run copypackage_dev"
   },
   "devDependencies": {
+    "@rheas/contracts": "^0.0.4",
+    "@rheas/errors": "^0.0.3",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.2",
-    "@rheas/contracts": "^0.0.1",
-    "@rheas/errors": "^0.0.1",
-    "jest": "^25.4.0",
-    "ts-jest": "^25.4.0",
+    "jest": "^26.5.2",
+    "ts-jest": "^26.4.1",
     "typescript": "^3.9.5"
   },
   "repository": {
