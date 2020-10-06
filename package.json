@@ -1,6 +1,6 @@
 {
   "name": "@rheas/container",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Dependency container module",
   "main": "index.js",
   "keywords": [
