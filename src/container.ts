@@ -5,11 +5,29 @@ import { IContainer, InstanceHandler, IContainerInstance } from '@rheas/contract
 
 export class Container implements IContainer {
     /**
+     * The container instance that has to be passed when resolving
+     * bindings. Default is `this`. This is helpful when classes are 
+     * unable to extend this class.
+     *
+     * @var IContainer
+     */
+    protected _container: IContainer;
+
+    /**
      * KeyValue mapping of container bindings.
      *
      * @var object
      */
     protected _instances: KeyValue<IContainerInstance> = {};
+
+    /**
+     * Creates a new container.
+     *
+     * @param instance
+     */
+    constructor(instance?: IContainer) {
+        this._container = instance || this;
+    }
 
     /**
      * Creates a singleton binding for the key with a resolver.
@@ -18,7 +36,7 @@ export class Container implements IContainer {
      * @param resolver
      */
     public singleton(name: string, resolver: InstanceHandler): IContainerInstance {
-        return this.bind(name, resolver, true);
+        return this.tie(name, resolver, true);
     }
 
     /**
@@ -29,13 +47,13 @@ export class Container implements IContainer {
      * @param resolver
      * @param singleton
      */
-    public bind(
+    public tie(
         name: string,
         resolver: InstanceHandler,
         singleton: boolean = false,
     ): IContainerInstance {
         return this.createInstance(name, () => {
-            return ContainerInstance.createFromResolver(this, resolver, singleton);
+            return ContainerInstance.createFromResolver(this._container, resolver, singleton);
         });
     }
 
@@ -49,7 +67,7 @@ export class Container implements IContainer {
      */
     public instance(name: string, instance: any, singleton: boolean = false): IContainerInstance {
         return this.createInstance(name, () => {
-            return ContainerInstance.createFromInstance(this, instance, singleton);
+            return ContainerInstance.createFromInstance(this._container, instance, singleton);
         });
     }
 
