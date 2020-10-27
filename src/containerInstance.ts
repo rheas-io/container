@@ -1,4 +1,5 @@
 import { IContainerInstance, IContainer, InstanceHandler } from '@rheas/contracts/container';
+import { assert } from 'console';
 
 export class ContainerInstance implements IContainerInstance {
     /**
@@ -83,7 +84,7 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Executes the service provider callback and returns the callback return.
      *
      * @return
      */
@@ -95,9 +96,9 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Removes the resolved instance.
      */
-    public unresolve() {
+    public unresolve() {        
         if (this._singleton) {
             return;
         }
@@ -105,7 +106,7 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Sets new resolver for the key.
      *
      * @param resolver
      */
@@ -116,7 +117,7 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Sets new instance for the key.
      *
      * @param instance
      */
@@ -127,7 +128,8 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Sets the singleton status of the key. Once singleton set, resolver or instance 
+     * can't be modified.
      *
      * @param status
      */
@@ -138,7 +140,7 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Returns binding singleton status.
      *
      * @return
      */
@@ -147,7 +149,8 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * @inheritdoc
+     * Returns the resolved instance of this binding. If an instance already exists, 
+     * then that value is returned. Otherwise the binding is resolved and returned.
      *
      * @return
      */
