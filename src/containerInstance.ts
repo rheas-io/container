@@ -89,16 +89,21 @@ export class ContainerInstance implements IContainerInstance {
      * @return
      */
     public resolve(): any {
-        if (typeof this._resolver === 'function') {
-            this._resolved = this._resolver(this._container);
+        if (typeof this._resolver !== 'function') {
+            return this._resolved;
         }
-        return this._resolved;
+        // Resolver is a function at this point. Resolve that function and cache it,
+        // if it is a singleton binding. Otherwise, we will resolve it on each call.
+        if (this._singleton) {
+            return (this._resolved = this._resolver(this._container));
+        }
+        return this._resolver(this._container);
     }
 
     /**
      * Removes the resolved instance.
      */
-    public unresolve() {        
+    public unresolve() {
         if (this._singleton) {
             return;
         }
@@ -128,7 +133,7 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * Sets the singleton status of the key. Once singleton set, resolver or instance 
+     * Sets the singleton status of the key. Once singleton set, resolver or instance
      * can't be modified.
      *
      * @param status
@@ -149,7 +154,7 @@ export class ContainerInstance implements IContainerInstance {
     }
 
     /**
-     * Returns the resolved instance of this binding. If an instance already exists, 
+     * Returns the resolved instance of this binding. If an instance already exists,
      * then that value is returned. Otherwise the binding is resolved and returned.
      *
      * @return
